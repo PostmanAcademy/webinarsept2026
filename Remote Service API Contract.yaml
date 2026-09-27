@@ -1,0 +1,237 @@
+openapi: 3.0.0
+info:
+  title: Remote Services API v1.2.0
+  version: 1.0.0
+  description: ''
+servers:
+  - url: '{{baseUrl}}'
+paths:
+  /v1/vehicles/{vin}/engine/start:
+    get:
+      summary: Turn engine on
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Engine started.
+        '400':
+          description: Action disabled by user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: This action was disabled by the user.
+        '500':
+          description: Unexpected error
+      tags:
+        - Engine
+      description: ''
+    parameters:
+      - name: vin
+        in: path
+        required: true
+        description: (Required) Required 17-character VIN (Vehicle Identification Number)
+        schema:
+          type: string
+        example: 4Y1SL65848Z411439
+  /v1/vehicles/{vin}/engine/stop:
+    get:
+      summary: Turn engine off
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Engine stopped.
+        '500':
+          description: Unexpected error
+      tags:
+        - Engine
+      description: ''
+    parameters:
+      - name: vin
+        in: path
+        required: true
+        description: (Required) Required 17-character VIN (Vehicle Identification Number)
+        schema:
+          type: string
+        example: 4Y1SL65848Z411439
+  /v1/vehicles/{vin}/engine/status:
+    get:
+      summary: Get engine status
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coolantTemp:
+                    type: string
+                  oilPressure:
+                    type: string
+                  oilTemp:
+                    type: string
+                  rpm:
+                    type: string
+                  running:
+                    type: string
+              example:
+                coolantTemp: <number>
+                oilPressure: <number>
+                oilTemp: <number>
+                rpm: <number>
+                running: <boolean>
+        '500':
+          description: Unexpected error
+      tags:
+        - Engine
+      description: ''
+    parameters:
+      - name: vin
+        in: path
+        required: true
+        description: (Required) Required 17-character VIN (Vehicle Identification Number)
+        schema:
+          type: string
+        example: 4Y1SL65848Z411439
+  /v1/vehicles/{vin}/interior/climate:
+    get:
+      summary: Get climate settings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ac:
+                    type: string
+                  fanspeed:
+                    type: string
+                  temp:
+                    type: string
+              example:
+                ac: <boolean>
+                fanspeed: <number>
+                temp: <string>
+        '500':
+          description: Unexpected error
+      tags:
+        - Climate Settings
+      description: ''
+    parameters:
+      - name: vin
+        in: path
+        required: true
+        schema:
+          type: string
+        example: <string>
+    post:
+      summary: Set climate settings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: <string>
+        '500':
+          description: Unexpected error
+      tags:
+        - Climate Settings
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ac:
+                  type: string
+                fanspeed:
+                  type: string
+                  format: utc-millisec
+                temp:
+                  type: string
+            example:
+              ac: 'true'
+              fanspeed: '8'
+              temp: hot
+  /v1/vehicles/{vin}/lock:
+    post:
+      summary: Lock
+      responses: {}
+      tags:
+        - Doors & Windows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target:
+                  type: string
+            example:
+              target: doors
+    parameters:
+      - name: vin
+        in: path
+        required: true
+        description: (Required) Required 17-character VIN (Vehicle Identification Number)
+        schema:
+          type: string
+        example: 4Y1SL65848Z411439
+    get:
+      summary: Check status of doors & windows
+      responses: {}
+      tags:
+        - Doors & Windows
+  /v1/vehicles/{vin}/unlock:
+    post:
+      summary: Unlock
+      responses: {}
+      tags:
+        - Doors & Windows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target:
+                  type: string
+            example:
+              target: doors
+    parameters:
+      - name: vin
+        in: path
+        required: true
+        description: (Required) Required 17-character VIN (Vehicle Identification Number)
+        schema:
+          type: string
+        example: 4Y1SL65848Z411439
